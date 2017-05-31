@@ -25,17 +25,24 @@ public class CharEvolution {
     }
     
     public void evolve(){
-        this.target = target;
         
         parent = new Sentence(randomText());
         List<Sentence> children = new ArrayList<>();
-        int iterations = 0;
+        int generations = 0;
+        int maxFitness = target.toString().length();
         
         while(true){
             for (int i = 0; i < 10; i++){
                 children.add(parent.copyAndMutate());
             }
+            setFitnessLevels(children);
+            parent = getBest(children);
             
+            if (parent.getFitness() == maxFitness){
+                break;
+            }else{
+                generations++;
+            }
         }
     }
     
@@ -56,10 +63,6 @@ public class CharEvolution {
             sb.append(rndChar());
         }
         
-        return null;
-    }
-    
-    public String mutate(String toMutate){
         return null;
     }
     
