@@ -34,10 +34,10 @@ public class SentenceTest {
         Sentence perfectMatch = new Sentence(testString);
         
         Sentence testMatch = new Sentence("This IS fwokit");
-        Integer expectedFitness = 7;
-        Integer testMatchFitness = testMatch.getFitness();
         
         testMatch.setFitness(testTarget);
+        Integer expectedFitness = 7;
+        Integer testMatchFitness = testMatch.getFitness();
         assertEquals("Fitness is not correct", expectedFitness, testMatchFitness);
         
         perfectMatch.setFitness(testTarget);

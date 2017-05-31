@@ -24,11 +24,11 @@ public class Sentence {
     
     public void setFitness(Sentence theTarget){
         fitness = 0;
-        for (char parentChar : sentence.toCharArray()){
-            for (char targetChar : theTarget.toString().toCharArray()){
-                if (targetChar == parentChar){
-                    fitness++;
-                }
+        String target = theTarget.toString();
+        
+        for (int i = 0; i < target.length(); i++){
+            if (target.charAt(i) == sentence.charAt(i)){
+                fitness++;
             }
         }
     }
