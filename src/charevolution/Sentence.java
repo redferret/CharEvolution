@@ -14,6 +14,11 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Sentence {
     private final String sentence;
     private int fitness;
+    public static int maxMutations;
+    
+    static {
+        maxMutations = 2;
+    }
     
     public Sentence(String chars){
         this.sentence = chars;
@@ -27,8 +32,11 @@ public class Sentence {
         
         StringBuilder sb = new StringBuilder(sentence);
         
-        randomCharIndex = random.nextInt(0, sentence.length());
-        sb.setCharAt(randomCharIndex, CharEvolution.rndChar());
+        int numMutations = random.nextInt(1, maxMutations);
+        for (int i = 0; i < numMutations; i++){
+            randomCharIndex = random.nextInt(0, sentence.length());
+            sb.setCharAt(randomCharIndex, CharEvolution.rndChar());
+        }
         
         return new Sentence(sb.toString());
     }

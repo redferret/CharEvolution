@@ -47,12 +47,17 @@ public class CharEvolutionTest {
         testChildren.add(new Sentence(expected.toString()));
         
         testClass.setFitnessLevels(testChildren);
-        Sentence bestChild = testClass.getBest(testChildren);
+        Sentence bestChild = null;//testClass.getBest(testChildren);
         
         assertNotNull("Stopped test, child is null", bestChild);
         
         assertEquals("Best not selected", 
                 expected.toString(), bestChild.toString());
+    }
+    
+    @Test
+    public void setGetBestChildrenTest(){
+        assertTrue("Not Implemented yet", false);
     }
     
 }

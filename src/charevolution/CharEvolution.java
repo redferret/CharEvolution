@@ -4,16 +4,18 @@ package charevolution;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-
 /**
  *
  * @author Richard DeSilvey
  */
 public class CharEvolution {
 
-    private Sentence target, parent;
+    public final static int NUM_OF_CHILDREN = 100;
+    
+    private final Sentence target;
+    private Sentence parent;
     private final static String RAND_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ "
-            + "abcdefghijklmnopqrstuvwxyz";
+            + "abcdefghijklmnopqrstuvwxyz!'";
     
     public CharEvolution(Sentence target){
         this.target = target;
@@ -27,51 +29,75 @@ public class CharEvolution {
     public void evolve(){
         
         parent = new Sentence(randomText());
-        List<Sentence> children = new ArrayList<>();
+        List<Sentence> offSpring = new ArrayList<>();
         int generation = 0;
         int maxFitness = target.toString().length();
-        
+        ThreadLocalRandom random = ThreadLocalRandom.current();
         while(true){
-            for (int i = 0; i < 10; i++){
-                children.add(parent.copyAndMutate());
+            for (int i = 0; i < NUM_OF_CHILDREN; i++){
+                offSpring.add(parent.copyAndMutate());
             }
-            setFitnessLevels(children);
-            printGeneration(children, generation);
-            parent = getBest(children);
+            setFitnessLevels(offSpring);
+            printGeneration(offSpring, generation);
+            List<Sentence> bestOffSpring = getBestOffSpring(offSpring);
+            List<Sentence> nextBestOffSpring = getBest(bestOffSpring);
             
+            if (!nextBestOffSpring.isEmpty()){
+                parent = nextBestOffSpring.get(random.nextInt(nextBestOffSpring.size()));
+            }else{
+                parent = offSpring.get(random.nextInt(offSpring.size()));
+            }
             if (parent.getFitness() == maxFitness){
                 break;
             }else{
                 generation++;
-                children.clear();
+                offSpring.clear();
             }
         }
         System.out.println("Solved in " + generation + " generations");
     }
     
-    private void printGeneration(List<Sentence> children, int gen){
+    private void printGeneration(List<Sentence> offSpring, int gen){
         System.out.println("------------------- GENERATION " 
                 + gen + " -------------------");
-        children.forEach(child -> {
+        System.out.println("Parent: " + parent + " : " + parent.getFitness());
+        
+        offSpring.forEach(child -> {
             System.out.println("  " + child + " : " + child.getFitness());
         });
         System.out.println("----------------- END OF GENERATION " 
                 + gen + " -----------------");
     }
     
-    public Sentence getBest(List<Sentence> offSpring){
+    public List<Sentence> getBestOffSpring(List<Sentence> offSpring){
         
-        Sentence bestChild = offSpring.get(0);
-        int bestFitness = bestChild.getFitness();
+        List<Sentence> bestOffSpring = new ArrayList<>();
+        int bestFitness = 0;
         
         for (Sentence child : offSpring){
-            if (child.getFitness() > bestFitness){
-                bestChild = child;
+            if (child.getFitness() >= bestFitness){
+                bestOffSpring.add(child);
                 bestFitness = child.getFitness();
             }
         }
         
-        return bestChild;
+        return bestOffSpring;
+    }
+    
+    public List<Sentence> getBest(List<Sentence> offSpring){
+        
+        List<Sentence> bestOffSpring = new ArrayList<>();
+        int bestFitness = 0;
+        
+        for (Sentence child : offSpring){
+            if (child.getFitness() > bestFitness){
+                bestOffSpring.clear();
+                bestOffSpring.add(child);
+                bestFitness = child.getFitness();
+            }
+        }
+        
+        return bestOffSpring;
     }
     
     public void setFitnessLevels(List<Sentence> offSpring){
@@ -95,7 +121,7 @@ public class CharEvolution {
      */
     public static void main(String[] args) {
 //        String target = args[0];
-        String target = "I LoVe ScIenCe";
+        String target = "Evolution's as REal as the earth's round";
         new CharEvolution(new Sentence(target)).evolve();
     }
     
