@@ -44,10 +44,22 @@ public class CharEvolution {
                 generations++;
             }
         }
+        System.out.println("Solved in " + generations + " generations");
     }
     
     public Sentence getBest(List<Sentence> offSpring){
-        return null;
+        
+        Sentence bestChild = offSpring.get(0);
+        int bestFitness = bestChild.getFitness();
+        
+        for (Sentence child : offSpring){
+            if (child.getFitness() > bestFitness){
+                bestChild = child;
+                bestFitness = child.getFitness();
+            }
+        }
+        
+        return bestChild;
     }
     
     public void setFitnessLevels(List<Sentence> offSpring){
@@ -70,7 +82,8 @@ public class CharEvolution {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        String target = args[0];
+//        String target = args[0];
+        String target = "I LoVe ScIenCe";
         new CharEvolution(new Sentence(target)).evolve();
     }
     

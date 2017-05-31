@@ -35,4 +35,24 @@ public class CharEvolutionTest {
                     expectedFitness, actualFitness);
         }
     }
+    
+    @Test
+    public void getBestTest(){
+        
+        List<Sentence> testChildren = new ArrayList<>();
+
+        Sentence expected = new Sentence("Test");
+        testChildren.add(new Sentence("Tsfa"));
+        testChildren.add(new Sentence("Teaa"));
+        testChildren.add(new Sentence(expected.toString()));
+        
+        testClass.setFitnessLevels(testChildren);
+        Sentence bestChild = testClass.getBest(testChildren);
+        
+        assertNotNull("Stopped test, child is null", bestChild);
+        
+        assertEquals("Best not selected", 
+                expected.toString(), bestChild.toString());
+    }
+    
 }
