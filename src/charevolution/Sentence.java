@@ -30,17 +30,10 @@ public class Sentence {
         int numMutations = random.nextInt(1, 4);
         for (int i = 0; i < numMutations; i++){
             randomCharIndex = random.nextInt(0, sentence.length());
-            sb.setCharAt(randomCharIndex, rndChar());
+            sb.setCharAt(randomCharIndex, CharEvolution.rndChar());
         }
         
         return new Sentence(sb.toString());
-    }
-    
-    private static char rndChar() {
-        int rnd = (int) (Math.random() * 52);
-        char base = (rnd < 26) ? 'A' : 'a';
-        return (char) (base + rnd % 26);
-
     }
     
     public void setFitness(Sentence theTarget){
