@@ -22,7 +22,8 @@ public class SentenceTest {
         
         assertFalse("Sentences should not match", 
                 testSentence.toString().equalsIgnoreCase(child.toString()));
-        
+        System.out.println("Parent: " + testSentence);
+        System.out.println("Child:  " + child);
     }
     
     @Test

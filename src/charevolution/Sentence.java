@@ -5,6 +5,8 @@
  */
 package charevolution;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 /**
  *
  * @author Richard
@@ -19,7 +21,26 @@ public class Sentence {
     }
 
     public Sentence copyAndMutate(){
-        return new Sentence(this.sentence);
+        
+        ThreadLocalRandom random = ThreadLocalRandom.current();
+        int randomCharIndex;
+        
+        StringBuilder sb = new StringBuilder(sentence);
+        
+        int numMutations = random.nextInt(1, 4);
+        for (int i = 0; i < numMutations; i++){
+            randomCharIndex = random.nextInt(0, sentence.length());
+            sb.setCharAt(randomCharIndex, rndChar());
+        }
+        
+        return new Sentence(sb.toString());
+    }
+    
+    private static char rndChar() {
+        int rnd = (int) (Math.random() * 52);
+        char base = (rnd < 26) ? 'A' : 'a';
+        return (char) (base + rnd % 26);
+
     }
     
     public void setFitness(Sentence theTarget){
