@@ -27,11 +27,8 @@ public class Sentence {
         
         StringBuilder sb = new StringBuilder(sentence);
         
-        int numMutations = random.nextInt(1, 4);
-        for (int i = 0; i < numMutations; i++){
-            randomCharIndex = random.nextInt(0, sentence.length());
-            sb.setCharAt(randomCharIndex, CharEvolution.rndChar());
-        }
+        randomCharIndex = random.nextInt(0, sentence.length());
+        sb.setCharAt(randomCharIndex, CharEvolution.rndChar());
         
         return new Sentence(sb.toString());
     }

@@ -28,7 +28,7 @@ public class CharEvolution {
         
         parent = new Sentence(randomText());
         List<Sentence> children = new ArrayList<>();
-        int generations = 0;
+        int generation = 0;
         int maxFitness = target.toString().length();
         
         while(true){
@@ -36,15 +36,27 @@ public class CharEvolution {
                 children.add(parent.copyAndMutate());
             }
             setFitnessLevels(children);
+            printGeneration(children, generation);
             parent = getBest(children);
             
             if (parent.getFitness() == maxFitness){
                 break;
             }else{
-                generations++;
+                generation++;
+                children.clear();
             }
         }
-        System.out.println("Solved in " + generations + " generations");
+        System.out.println("Solved in " + generation + " generations");
+    }
+    
+    private void printGeneration(List<Sentence> children, int gen){
+        System.out.println("------------------- GENERATION " 
+                + gen + " -------------------");
+        children.forEach(child -> {
+            System.out.println("  " + child + " : " + child.getFitness());
+        });
+        System.out.println("----------------- END OF GENERATION " 
+                + gen + " -----------------");
     }
     
     public Sentence getBest(List<Sentence> offSpring){
@@ -75,7 +87,7 @@ public class CharEvolution {
             sb.append(rndChar());
         }
         
-        return null;
+        return sb.toString();
     }
     
     /**
