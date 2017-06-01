@@ -1,6 +1,7 @@
 
 package charevolution;
 
+import static charevolution.Sentence.maxMutations;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -10,7 +11,7 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class CharEvolution {
 
-    public final static int NUM_OF_CHILDREN = 100;
+    public final static int NUM_OF_CHILDREN = 50;
     
     private final Sentence target;
     private Sentence parent;
@@ -27,8 +28,9 @@ public class CharEvolution {
     }
     
     public void evolve(){
-        
-        parent = new Sentence(randomText());
+        String randomText = randomText();
+        parent = new Sentence(randomText);
+        parent.setFitness(target);
         List<Sentence> offSpring = new ArrayList<>();
         int generation = 0;
         int maxFitness = target.toString().length();
@@ -54,7 +56,8 @@ public class CharEvolution {
                 offSpring.clear();
             }
         }
-        System.out.println("Solved in " + generation + " generations");
+        System.out.println("Original: " + randomText);
+        System.out.println("Final:    " + parent);
     }
     
     private void printGeneration(List<Sentence> offSpring, int gen){
@@ -121,7 +124,7 @@ public class CharEvolution {
      */
     public static void main(String[] args) {
 //        String target = args[0];
-        String target = "Evolution's as REal as the earth's round";
+        String target = "This is how evolution works";
         new CharEvolution(new Sentence(target)).evolve();
     }
     

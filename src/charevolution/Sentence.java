@@ -12,7 +12,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author Richard
  */
 public class Sentence {
-    private final String sentence;
+    private String sentence;
     private int fitness;
     public static int maxMutations;
     
@@ -25,20 +25,29 @@ public class Sentence {
         fitness = 0;
     }
 
+    public Sentence copyParent(){
+        return new Sentence(sentence);
+    }
+    
+    public void mutate(int numMutations){
+        ThreadLocalRandom random = ThreadLocalRandom.current();
+        StringBuilder sb = new StringBuilder(sentence);
+        
+        for (int i = 0; i < numMutations; i++){
+            int randomCharIndex = random.nextInt(0, sentence.length());
+            sb.setCharAt(randomCharIndex, CharEvolution.rndChar());
+        }
+        sentence = sb.toString();
+    }
+    
     public Sentence copyAndMutate(){
         
         ThreadLocalRandom random = ThreadLocalRandom.current();
-        int randomCharIndex;
-        
-        StringBuilder sb = new StringBuilder(sentence);
-        
         int numMutations = random.nextInt(1, maxMutations);
-        for (int i = 0; i < numMutations; i++){
-            randomCharIndex = random.nextInt(0, sentence.length());
-            sb.setCharAt(randomCharIndex, CharEvolution.rndChar());
-        }
+        Sentence child = copyParent();
+        child.mutate(numMutations);
         
-        return new Sentence(sb.toString());
+        return child;
     }
     
     public void setFitness(Sentence theTarget){
